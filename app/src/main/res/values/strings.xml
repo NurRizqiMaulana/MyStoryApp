@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">MyStoryApp</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="signup">Sign Up</string>
+    <string name="create_an_account_success">Create account success!</string>
+    <string name="create_an_account_failed">Create account failed!</string>
+    <string name="signin">Sign In</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="dont_have_an_account">Don\'t have account? Please</string>
+    <string name="sign_in_success">Sign in success</string>
+    <string name="sign_in_failed">Sign in failed</string>
+    <string name="sign_out">Sign out</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="logout">Logout</string>
+    <string name="photo_story">Photo Story</string>
+    <string name="failed_to_load_data">Failed to load data</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="description">Description</string>
+    <string name="upload">Upload</string>
+    <string name="empty_image_warning">Please, input your image!!!</string>
+    <string name="add_new_story_success">Add new story success</string>
+    <string name="add_new_story_failed">Add new story failed</string>
+    <string name="add_new_story">Add new story</string>
+    <string name="detail_story">Detail Story</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="enter_caredential">Enter your caredential to continue</string>
+    <string name="upload_story">Upload Your Story</string>
+</resources>
