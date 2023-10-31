@@ -30,4 +30,12 @@
     <string name="welcome_back">Welcome Back</string>
     <string name="enter_caredential">Enter your caredential to continue</string>
     <string name="upload_story">Upload Your Story</string>
+    <string name="hi" translatable="false">HI,</string>
+    <string name="my_name" translatable="false">My Name</string>
+    <string name="maps">Maps</string>
+    <string name="title_activity_maps" translatable="false">MapsActivity</string>
+    <string name="retry">Retry</string>
+    <string name="active_location">Active your location?</string>
+    <string name="style_failed">Style parsing failed</string>
+    <string name="style_error">"Can't find style. Error: "</string>
 </resources>

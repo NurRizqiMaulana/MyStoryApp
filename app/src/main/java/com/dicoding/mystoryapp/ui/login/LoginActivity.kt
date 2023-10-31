@@ -42,8 +42,13 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun playAnimation() {
-        ObjectAnimator.ofFloat(binding.imageView, View.TRANSLATION_X, -30f, 30f).apply {
-            duration = 6000
+        ObjectAnimator.ofFloat(
+            binding.imageView,
+            View.TRANSLATION_X,
+            TRANSLATION_X_START,
+            TRANSLATION_X_END
+        ).apply {
+            duration = ANIMATION_DURATION
             repeatCount = ObjectAnimator.INFINITE
             repeatMode = ObjectAnimator.REVERSE
         }.start()
@@ -53,21 +58,29 @@ class LoginActivity : AppCompatActivity() {
         binding.apply {
             val email = edLoginEmail.text.toString()
             val password = edLoginPassword.text.toString()
-            viewModel.login( email, password).observe(this@LoginActivity) { result ->
+            viewModel.login(email, password).observe(this@LoginActivity) { result ->
                 if (result != null) {
                     when (result) {
                         is Result.Loading -> {
                             showLoading(true)
                             signinButton.isEnabled = false
                         }
+
                         is Result.Success -> {
                             showLoading(false)
                             signinButton.isEnabled = true
-                            viewModel.setlogin(UserModel(email,result.data.loginResult.token))
+                            viewModel.setlogin(
+                                UserModel(
+                                    email,
+                                    result.data.loginResult.name,
+                                    result.data.loginResult.token
+                                )
+                            )
                             showToast(getString(R.string.sign_in_success))
                             moveToMainActivity()
 
                         }
+
                         is Result.Error -> {
                             showLoading(false)
                             signinButton.isEnabled = true
@@ -82,9 +95,11 @@ class LoginActivity : AppCompatActivity() {
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
+
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+
     private fun setupView() {
         @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -98,10 +113,16 @@ class LoginActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-    private fun moveToMainActivity(){
+    private fun moveToMainActivity() {
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
         finish()
+    }
+
+    private companion object {
+        private const val TRANSLATION_X_START = -30f
+        private const val TRANSLATION_X_END = 30f
+        private const val ANIMATION_DURATION = 6000L
     }
 }

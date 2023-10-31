@@ -7,15 +7,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dicoding.mystoryapp.data.remote.response.ListStoryItem
 import com.dicoding.mystoryapp.databinding.ItemRowStoryBinding
 import com.dicoding.mystoryapp.ui.detail.DetailActivity
 
-class StoryAdapter: ListAdapter<ListStoryItem, StoryAdapter.ViewHolder>(DIFF_CALLBACK) {
+class StoryAdapter: PagingDataAdapter<ListStoryItem, StoryAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemRowStoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -24,10 +24,12 @@ class StoryAdapter: ListAdapter<ListStoryItem, StoryAdapter.ViewHolder>(DIFF_CAL
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
 
-        Glide.with(holder.itemView.context).load(item.photoUrl).into(holder.imageStory)
-        holder.tvNameStory.text = item.name
-        holder.tvDescStory.text = item.description
-        holder.bind(item)
+        Glide.with(holder.itemView.context).load(item?.photoUrl).into(holder.imageStory)
+        holder.tvNameStory.text = item?.name
+        holder.tvDescStory.text = item?.description
+        if (item != null) {
+            holder.bind(item)
+        }
 
     }
 

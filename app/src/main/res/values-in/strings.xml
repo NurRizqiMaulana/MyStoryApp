@@ -31,4 +31,11 @@
     <string name="welcome_back">Selamat Datang Kembali</string>
     <string name="enter_caredential">Masukkan kredensial Anda untuk melanjutkan</string>
     <string name="upload_story">Unggah Cerita Anda</string>
+    <string name="hi">Hallo,</string>
+    <string name="my_name">Nama Saya</string>
+    <string name="maps">Maps</string>
+    <string name="retry">Coba Lagi</string>
+    <string name="active_location">Active your location?</string>
+    <string name="style_failed">Style parsing failed</string>
+    <string name="style_error">"Can't find style. Error: "</string>
 </resources>

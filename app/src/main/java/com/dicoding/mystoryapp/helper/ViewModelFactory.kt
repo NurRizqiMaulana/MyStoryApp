@@ -7,6 +7,7 @@ import com.dicoding.mystoryapp.data.di.Injection
 import com.dicoding.mystoryapp.data.repository.StoryRepository
 import com.dicoding.mystoryapp.data.repository.UserRepository
 import com.dicoding.mystoryapp.ui.main.MainViewModel
+import com.dicoding.mystoryapp.ui.maps.MapsViewModel
 
 class ViewModelFactory(
     private val userRepository: UserRepository,
@@ -19,6 +20,9 @@ class ViewModelFactory(
         return when {
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
                 MainViewModel(userRepository,storyRepository) as T
+            }
+            modelClass.isAssignableFrom(MapsViewModel::class.java) -> {
+                MapsViewModel(storyRepository,userRepository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
@@ -33,7 +37,7 @@ class ViewModelFactory(
                 synchronized(ViewModelFactory::class.java) {
                     INSTANCE = ViewModelFactory(
                         Injection.provideUserRepository(context),
-                        Injection.provideStoryRepository()
+                        Injection.provideStoryRepository(context)
                     )
                 }
             }

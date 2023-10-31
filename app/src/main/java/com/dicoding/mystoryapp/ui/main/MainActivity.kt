@@ -5,21 +5,19 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.mystoryapp.R
-import com.dicoding.mystoryapp.data.remote.response.ListStoryItem
-import com.dicoding.mystoryapp.data.repository.Result
 import com.dicoding.mystoryapp.databinding.ActivityMainBinding
 import com.dicoding.mystoryapp.helper.ViewModelFactory
+import com.dicoding.mystoryapp.ui.adapter.LoadingStateAdapter
 import com.dicoding.mystoryapp.ui.adapter.StoryAdapter
 import com.dicoding.mystoryapp.ui.addstory.AddStoryActivity
 import com.dicoding.mystoryapp.ui.login.LoginActivity
+import com.dicoding.mystoryapp.ui.maps.MapsActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -45,7 +43,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.fab.setOnClickListener { view ->
+        binding.fab.setOnClickListener {
             val intent = Intent(this, AddStoryActivity::class.java)
             startActivity(intent)
         }
@@ -56,39 +54,23 @@ class MainActivity : AppCompatActivity() {
         viewModel.getSession().observe(this) { user ->
             if (user.token.isNotBlank()) {
                 processGetAllStories(user.token)
+                supportActionBar?.elevation = 0f
+                val name = user.name
+                supportActionBar?.title = "Hai, $name"
             }
         }
     }
 
     private fun processGetAllStories(token: String) {
-        viewModel.getStories(token).observe(this) { result ->
-            if (result != null) {
-                when (result) {
-                    is Result.Loading -> {
-                        binding.progressBar.visibility = View.VISIBLE
-                    }
-                    is Result.Success -> {
-                        binding.progressBar.visibility = View.GONE
-                        setListStory(result.data)
-                    }
-                    is Result.Error -> {
-                        Toast.makeText(
-                            this,
-                            R.string.failed_to_load_data,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-
-                    else -> {}
-                }
-            }
-        }
-    }
-
-    private fun setListStory(listStory: List<ListStoryItem>) {
         val adapter = StoryAdapter()
-        adapter.submitList(listStory)
-        binding.rvUsers.adapter = adapter
+        binding.rvUsers.adapter = adapter.withLoadStateFooter(
+            footer = LoadingStateAdapter{
+                adapter.retry()
+            }
+        )
+        viewModel.getStories(token).observe(this) {
+            adapter.submitData(lifecycle,it)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -101,6 +83,10 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             android.R.id.home -> {
                 onBackPressed()
+                true
+            }
+            R.id.action_maps -> {
+                startActivity(Intent(this,MapsActivity::class.java))
                 true
             }
             R.id.action_setting -> {
